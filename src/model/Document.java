@@ -6,9 +6,9 @@ import java.util.HashMap;
 public class Document {
 
 	private HashMap<Topic, Integer> topicCount;
-	private ArrayList<String> words;
+	private ArrayList<Word> words;
 
-	public Document(ArrayList<String> words) {
+	public Document(ArrayList<Word> words) {
 		this.words = words;
 		topicCount = new HashMap<Topic, Integer>();
 	}
@@ -17,7 +17,7 @@ public class Document {
 		return words.size();
 	}
 
-	public ArrayList<String> getWords() {
+	public ArrayList<Word> getWords() {
 		return words;
 	}
 

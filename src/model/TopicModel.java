@@ -29,13 +29,13 @@ public class TopicModel {
 	private void getReadyForLDA() {
 		Random rand = new Random();
 		for (Document document : documents) {
-			for (String word : document.getWords()) {
+			for (Word word : document.getWords()) {
 				if(wordCount.containsKey(word))
-					wordCount.put(word, wordCount.get(word) + 1);
+					wordCount.put(word.getWord(), wordCount.get(word) + 1);
 				else
-					wordCount.put(word, 1);
+					wordCount.put(word.getWord(), 1);
 				int randomTopic = rand.nextInt(topics.size());
-				topics.get(randomTopic).addWord(word);
+				topics.get(randomTopic).addWord(word.getWord());
 				document.increaseTopicCount(topics.get(randomTopic));
 			}
 		}
@@ -45,7 +45,7 @@ public class TopicModel {
 		getReadyForLDA();
 		for(int i = 0; i < iterations; i++){ //Main loop for lda
 			for(Document document : documents){
-				for(String word : document.getWords()){
+				for(Word word : document.getWords()){
 					
 				}
 			}
