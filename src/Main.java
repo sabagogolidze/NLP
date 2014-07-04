@@ -10,28 +10,32 @@ import java.util.regex.Pattern;
 
 public class Main {
 	public static void main(String[] args) throws IOException {
-		String content = new Scanner(new File("input.txt")).useDelimiter("\\Z").next();
-		content = content.replaceAll("[^ა-ჰ\\d -.!?_,:;\"']", " ");
-		content = content.replaceAll("\\(", " ");
-		content = content.replaceAll("\\)", " ");
+//		String content = new Scanner(new File("input.txt")).useDelimiter("\\Z").next();
+//		content = content.replaceAll("[^ა-ჰ\\d -.!?_,:;\"']", " ");
+//		content = content.replaceAll("\\(", " ");
+//		content = content.replaceAll("\\)", " ");
+//		
+//		
+//		content = content.replaceAll("\\.+", ".");
+//		content = content.replaceAll("[.!?;]", ".");
+//		content = content.replaceAll(" +", " ");
+//		content = content.replaceAll("\\. +", ".");
+//		content = content.replaceAll("\\.+", ".");		
+//		content = content.replaceAll("\\.", ".\n");
+//		
+//		content = content.replaceAll("([^ა-ჰ])(-)", " ");
+//		
+//		content = content.replaceAll("\\. +", ".");
+//		content = content.replaceAll("\\.", ".\n");		
+//		content = content.replaceAll("\n+", "\n");
+//		content = content.replaceAll("(-)([^ა-ჰ])", " ");
+//		
+//		PrintWriter wr  = new PrintWriter(new FileWriter("output.txt"));
+//		wr.append(content+"\n");
+//		wr.close();
 		
 		
-		content = content.replaceAll("\\.+", ".");
-		content = content.replaceAll("[.!?;]", ".");
-		content = content.replaceAll(" +", " ");
-		content = content.replaceAll("\\. +", ".");
-		content = content.replaceAll("\\.+", ".");		
-		content = content.replaceAll("\\.", ".\n");
 		
-		content = content.replaceAll("([^ა-ჰ])(-)", " ");
 		
-		content = content.replaceAll("\\. +", ".");
-		content = content.replaceAll("\\.", ".\n");		
-		content = content.replaceAll("\n+", "\n");
-		content = content.replaceAll("(-)([^ა-ჰ])", " ");
-		
-		PrintWriter wr  = new PrintWriter(new FileWriter("output.txt"));
-		wr.append(content+"\n");
-		wr.close();
 	}
 }
