@@ -19,4 +19,11 @@ public class Topic {
 	public void removeWord(String word){
 		wordMap.put(word, wordMap.get(word) - 1);
 	}
+	
+	public int getWordCount(String word){
+		if(wordMap.containsKey(word))
+			return wordMap.get(word);
+		else
+			return 0;
+	}
 }

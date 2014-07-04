@@ -40,5 +40,9 @@ public class Document {
 			return 0;
 		}
 	}
-
+	
+	public double getTopicProbability(Topic t){
+		return ((double)topicCount.get(t)) / ((double)words.size());
+	}
+	
 }
