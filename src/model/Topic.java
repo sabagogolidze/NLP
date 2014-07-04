@@ -9,6 +9,10 @@ public class Topic {
 		wordMap = new HashMap<String, Integer>();
 	}
 	
+	public HashMap<String, Integer> getWordMap(){
+		return wordMap;
+	}
+	
 	public void addWord(String word){
 		if(wordMap.containsKey(word))
 			wordMap.put(word, wordMap.get(word) + 1);

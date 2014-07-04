@@ -19,8 +19,8 @@ import model.Word;
 
 public class Main {
 	
-	private final static int TOPIC_COUNT = 3; 
-	private static String articleDelimiter = "\nთემა:\n";
+	private final static int TOPIC_COUNT = 2; 
+	private static String articleDelimiter = "+";
 	private final static int ITERATIONS = 26;
 	
 	public static void main(String[] args) throws IOException {
@@ -51,15 +51,15 @@ public class Main {
 		Scanner sc = new Scanner(new File("input.txt"));
 		String topics = sc.useDelimiter("\\Z").next();
 //		System.out.println(articleCount);
-		String [] splitString = topics.split(articleDelimiter);
+		StringTokenizer tk1 = new StringTokenizer(topics,articleDelimiter);
 		TopicModel topicModel = new TopicModel(ITERATIONS);
-	    for(int i = 0; i < splitString.length ; i ++){
-	        String article = splitString[i];
+		while(tk1.hasMoreElements()){
+	        String article = tk1.nextToken();
 	        ArrayList<Word> words = new ArrayList<Word>();
-	        StringTokenizer tk = new StringTokenizer(article,"., !?_:;)(\"\'\n\t");
+	        StringTokenizer tk = new StringTokenizer(article);
 	        while(tk.hasMoreElements()){
 	        	String s = tk.nextToken();
-//	        	System.out.println(s);
+	        	System.out.println(s);
 	        	words.add(new Word(s));
 	        }
 	        Document d = new Document(words);
@@ -69,7 +69,16 @@ public class Main {
 	    
 	    for(int i=0;i<TOPIC_COUNT;i++){
 	    	topicModel.addTopic(new Topic());
-	    }	    
+	    }
+	    topicModel.doLDA();
+	    ArrayList<Topic> arr = topicModel.getTopics();
+	    for(Topic t:arr){
+	    	System.out.println("topic:");
+	    	for(String s: t.getWordMap().keySet()){
+	    		System.out.print(s + " "  +t.getWordMap().get(s) + "  |  ");
+	    	}
+	    	System.out.println();
+	    }
 		
 		
 		
