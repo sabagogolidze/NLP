@@ -1,6 +1,5 @@
 package model;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -31,8 +30,8 @@ public class TopicModel {
 		Random rand = new Random();
 		for (Document document : documents) {
 			for (Word word : document.getWords()) {
-				if(wordCount.containsKey(word))
-					wordCount.put(word.getWord(), wordCount.get(word) + 1);
+				if(wordCount.containsKey(word.getWord()))
+					wordCount.put(word.getWord(), wordCount.get(word.getWord()) + 1);
 				else
 					wordCount.put(word.getWord(), 1);
 				int randomTopic = rand.nextInt(topics.size());
@@ -47,6 +46,7 @@ public class TopicModel {
 		getReadyForLDA();
 		ArrayList<Double> probs;
 		for(int i = 0; i < iterations; i++){ //Main loop for lda
+			printWords();
 			for(Document document : documents){
 				for(Word word : document.getWords()){
 					Topic topic = topics.get(word.getIndex());
@@ -67,15 +67,19 @@ public class TopicModel {
 	
 	private double getProbability(Word word, Document document, Topic topic){
 		double prob = document.getTopicProbability(topic);
-		prob *= ((double)topic.getWordCount(word.getWord()) / 
+		System.out.print(prob + " " + word.getWord() + " " 
+		+ topic.getWordCount(word.getWord()) + " " + (wordCount.get(word.getWord()) - 1));
+		prob *= ((double)(topic.getWordCount(word.getWord())) / 
 				((double)(wordCount.get(word.getWord()) - 1)));
+		System.out.println(prob);
 		return prob;
 	}
 	
 	private int getRandomTopic(ArrayList<Double> probs){
 		double total = 0;
-		for(double d : probs)
+		for(double d : probs){
 			total += d;
+		}
 		total *= Math.random();
 		for(int i = 0; i < probs.size(); i++){
 			if(total <= probs.get(i))
@@ -87,5 +91,15 @@ public class TopicModel {
 	
 	public ArrayList<Topic> getTopics(){
 		return topics;
+	}
+	
+	private void printWords(){
+		for(Document d : documents){
+			for(Word w : d.getWords()){
+				System.out.print(w.getWord() + " " +  + w.getIndex() + " | ");
+			}
+			System.out.println();
+		}
+		System.out.println("-----------------------");
 	}
 }
