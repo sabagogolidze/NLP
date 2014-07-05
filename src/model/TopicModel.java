@@ -30,8 +30,9 @@ public class TopicModel {
 		Random rand = new Random();
 		for (Document document : documents) {
 			for (Word word : document.getWords()) {
-				if(wordCount.containsKey(word.getWord()))
-					wordCount.put(word.getWord(), wordCount.get(word.getWord()) + 1);
+				if (wordCount.containsKey(word.getWord()))
+					wordCount.put(word.getWord(),
+							wordCount.get(word.getWord()) + 1);
 				else
 					wordCount.put(word.getWord(), 1);
 				int randomTopic = rand.nextInt(topics.size());
@@ -45,15 +46,15 @@ public class TopicModel {
 	public void doLDA() {
 		getReadyForLDA();
 		ArrayList<Double> probs;
-		for(int i = 0; i < iterations; i++){ //Main loop for lda
+		for (int i = 0; i < iterations; i++) { // Main loop for lda
 			printWords();
-			for(Document document : documents){
-				for(Word word : document.getWords()){
+			for (Document document : documents) {
+				for (Word word : document.getWords()) {
 					Topic topic = topics.get(word.getIndex());
 					topic.removeWord(word.getWord());
 					document.decreaseTopicCount(topic);
 					probs = new ArrayList<Double>();
-					for(Topic t : topics)
+					for (Topic t : topics)
 						probs.add(getProbability(word, document, t));
 					int index = getRandomTopic(probs);
 					topic = topics.get(index);
@@ -64,6 +65,7 @@ public class TopicModel {
 			}
 		}
 	}
+<<<<<<< HEAD
 	//TODO sxva kodis shemwomeba
 	//TODO videro
 	
@@ -71,31 +73,47 @@ public class TopicModel {
 		double prob = document.getTopicProbability(topic);
 		prob *= ((double)(topic.getWordCount(word.getWord())) / 
 				((double)(wordCount.get(word.getWord()) - 1)));
+=======
+
+	private double getProbability(Word word, Document document, Topic topic) {
+		double prob = document.getTopicProbability(topic);
+		// System.out.print(prob + " " + word.getWord() + " "
+		// + topic.getWordCount(word.getWord()) + " " +
+		// (wordCount.get(word.getWord()) - 1));
+		double a = (double) (topic.getWordCount(word.getWord())) + 0.5;
+		double b = ((double) (topic.getWordSum())) + 0.5 * wordCount.size();
+
+		double c = (a) / b;
+
+		prob *= c;
+
+		// System.out.println(" "+prob);
+>>>>>>> 0bce4cad1562b57198184d513001c04c681f54bd
 		return prob;
 	}
-	
-	private int getRandomTopic(ArrayList<Double> probs){
+
+	private int getRandomTopic(ArrayList<Double> probs) {
 		double total = 0;
-		for(double d : probs){
+		for (double d : probs) {
 			total += d;
 		}
 		total *= Math.random();
-		for(int i = 0; i < probs.size(); i++){
-			if(total <= probs.get(i))
+		for (int i = 0; i < probs.size(); i++) {
+			if (total <= probs.get(i))
 				return i;
 			total -= probs.get(i);
 		}
 		return probs.size() - 1;
 	}
-	
-	public ArrayList<Topic> getTopics(){
+
+	public ArrayList<Topic> getTopics() {
 		return topics;
 	}
-	
-	private void printWords(){
-		for(Document d : documents){
-			for(Word w : d.getWords()){
-				System.out.print(w.getWord() + " " +  + w.getIndex() + " | ");
+
+	private void printWords() {
+		for (Document d : documents) {
+			for (Word w : d.getWords()) {
+				System.out.print(w.getWord() + " " + +w.getIndex() + " | ");
 			}
 			System.out.println();
 		}

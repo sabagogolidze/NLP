@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Topic {
 	private HashMap<String, Integer> wordMap;
-	
+	private int wordSum = 0;
 	public Topic(){
 		wordMap = new HashMap<String, Integer>();
 	}
@@ -18,10 +18,12 @@ public class Topic {
 			wordMap.put(word, wordMap.get(word) + 1);
 		else
 			wordMap.put(word, 1);
+		setWordSum(getWordSum() + 1);
 	}
 	
 	public void removeWord(String word){
 		wordMap.put(word, wordMap.get(word) - 1);
+		setWordSum(getWordSum() - 1);
 	}
 	
 	public int getWordCount(String word){
@@ -30,4 +32,14 @@ public class Topic {
 		else
 			return 0;
 	}
+
+	public int getWordSum() {
+		return wordSum;
+	}
+
+	private void setWordSum(int wordSum) {
+		this.wordSum = wordSum;
+	}
+	
+	
 }

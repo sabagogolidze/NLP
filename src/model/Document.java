@@ -44,7 +44,18 @@ public class Document {
 	public double getTopicProbability(Topic t){
 		if(topicCount.get(t) == null)
 			return 0;
+<<<<<<< HEAD
 		return ((double)(topicCount.get(t))) / ((double)(words.size() - 1));
+=======
+		}
+		double a = (double)topicCount.get(t) + 2;
+//		if(a<=0){
+//			a=0.1;
+//		}
+		double b = (double)(words.size() - 1) + 2*2;
+		
+		return (a) / (b);
+>>>>>>> 0bce4cad1562b57198184d513001c04c681f54bd
 	}
 	
 }
