@@ -61,7 +61,7 @@ public class Main {
 		//
 		// }
 		String[] splitString = topics.split(articleDelimiter);
-		TopicModel topicModel = new TopicModel(ITERATIONS);
+		TopicModel topicModel = new TopicModel(ITERATIONS, 2, 0.5);
 		for (int i = 0; i < splitString.length; i++) {
 			String article = splitString[i];
 			ArrayList<Word> words = new ArrayList<Word>();

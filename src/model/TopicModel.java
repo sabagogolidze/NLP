@@ -8,10 +8,12 @@ public class TopicModel {
 	private ArrayList<Topic> topics;
 	private ArrayList<Document> documents;
 	private HashMap<String, Integer> wordCount;
-	private double alpha, beta;
+	public static double alpha = 0, beta = 0, topicCount = 0;
 	private int iterations;
 
-	public TopicModel(int iterations) {
+	public TopicModel(int iterations, double alpha, double beta) {
+		TopicModel.alpha = alpha;
+		TopicModel.beta = beta;
 		topics = new ArrayList<Topic>();
 		documents = new ArrayList<Document>();
 		wordCount = new HashMap<String, Integer>();
@@ -20,6 +22,7 @@ public class TopicModel {
 
 	public void addTopic(Topic t) {
 		topics.add(t);
+		topicCount++;
 	}
 
 	public void addDocument(Document d) {
@@ -47,7 +50,6 @@ public class TopicModel {
 		getReadyForLDA();
 		ArrayList<Double> probs;
 		for (int i = 0; i < iterations; i++) { // Main loop for lda
-			printWords();
 			for (Document document : documents) {
 				for (Word word : document.getWords()) {
 					Topic topic = topics.get(word.getIndex());
@@ -65,20 +67,12 @@ public class TopicModel {
 			}
 		}
 	}
-	//TODO sxva kodis shemwomeba
-	//TODO videro
-	
-	private double getProbability(Word word, Document document, Topic topic){
+
+	private double getProbability(Word word, Document document, Topic topic) {
 		double prob = document.getTopicProbability(topic);
-		prob *= ((double)(topic.getWordCount(word.getWord())) / 
-				((double)(wordCount.get(word.getWord()) - 1)));
 		double a = (double) (topic.getWordCount(word.getWord())) + 0.5;
 		double b = ((double) (topic.getWordSum())) + 0.5 * wordCount.size();
-
-		double c = (a) / b;
-
-		prob *= c;
-
+		prob *= (a) / b;
 		return prob;
 	}
 
@@ -99,15 +93,4 @@ public class TopicModel {
 	public ArrayList<Topic> getTopics() {
 		return topics;
 	}
-
-	private void printWords() {
-		for (Document d : documents) {
-			for (Word w : d.getWords()) {
-				System.out.print(w.getWord() + " " + +w.getIndex() + " | ");
-			}
-			System.out.println();
-		}
-		System.out.println("-----------------------");
-	}
-	
 }
