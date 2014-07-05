@@ -65,7 +65,6 @@ public class TopicModel {
 			}
 		}
 	}
-<<<<<<< HEAD
 	//TODO sxva kodis shemwomeba
 	//TODO videro
 	
@@ -73,13 +72,6 @@ public class TopicModel {
 		double prob = document.getTopicProbability(topic);
 		prob *= ((double)(topic.getWordCount(word.getWord())) / 
 				((double)(wordCount.get(word.getWord()) - 1)));
-=======
-
-	private double getProbability(Word word, Document document, Topic topic) {
-		double prob = document.getTopicProbability(topic);
-		// System.out.print(prob + " " + word.getWord() + " "
-		// + topic.getWordCount(word.getWord()) + " " +
-		// (wordCount.get(word.getWord()) - 1));
 		double a = (double) (topic.getWordCount(word.getWord())) + 0.5;
 		double b = ((double) (topic.getWordSum())) + 0.5 * wordCount.size();
 
@@ -87,8 +79,6 @@ public class TopicModel {
 
 		prob *= c;
 
-		// System.out.println(" "+prob);
->>>>>>> 0bce4cad1562b57198184d513001c04c681f54bd
 		return prob;
 	}
 
