@@ -41,5 +41,8 @@ public class Topic {
 		this.wordSum = wordSum;
 	}
 	
-	
+	public double getProbabaility(Word w){
+		return ((double)(wordMap.get(w.getWord())) + TopicModel.beta) / 
+				((double)wordSum + TopicModel.beta * TopicModel.vocabulary);
+	}
 }

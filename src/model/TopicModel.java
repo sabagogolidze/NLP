@@ -8,7 +8,7 @@ public class TopicModel {
 	private ArrayList<Topic> topics;
 	private ArrayList<Document> documents;
 	private HashMap<String, Integer> wordCount;
-	public static double alpha = 0, beta = 0, topicCount = 0;
+	public static double alpha = 0, beta = 0, topicCount = 0, vocabulary = 0;
 	private int iterations;
 
 	public TopicModel(int iterations, double alpha, double beta) {
@@ -44,6 +44,7 @@ public class TopicModel {
 				word.setTopicIndex(randomTopic);
 			}
 		}
+		vocabulary = wordCount.size();
 	}
 
 	public void doLDA() {
@@ -69,11 +70,7 @@ public class TopicModel {
 	}
 
 	private double getProbability(Word word, Document document, Topic topic) {
-		double prob = document.getTopicProbability(topic);
-		double a = (double) (topic.getWordCount(word.getWord())) + 0.5;
-		double b = ((double) (topic.getWordSum())) + 0.5 * wordCount.size();
-		prob *= (a) / b;
-		return prob;
+		return document.getTopicProbability(topic) * topic.getProbabaility(word);
 	}
 
 	private int getRandomTopic(ArrayList<Double> probs) {

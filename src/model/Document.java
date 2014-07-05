@@ -44,7 +44,7 @@ public class Document {
 	public double getTopicProbability(Topic t){
 		if(topicCount.get(t) == null)
 			return 0;
-		double a = (double)(topicCount.get(t)) + TopicModel.alpha;;
+		double a = (double)(topicCount.get(t)) + TopicModel.alpha;
 		double b = (double)(words.size() - 1) + 
 				TopicModel.alpha * TopicModel.topicCount;
 		return (a) / (b);
