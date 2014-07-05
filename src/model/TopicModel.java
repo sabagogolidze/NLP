@@ -64,14 +64,13 @@ public class TopicModel {
 			}
 		}
 	}
+	//TODO sxva kodis shemwomeba
+	//TODO videro
 	
 	private double getProbability(Word word, Document document, Topic topic){
 		double prob = document.getTopicProbability(topic);
-		System.out.print(prob + " " + word.getWord() + " " 
-		+ topic.getWordCount(word.getWord()) + " " + (wordCount.get(word.getWord()) - 1));
 		prob *= ((double)(topic.getWordCount(word.getWord())) / 
 				((double)(wordCount.get(word.getWord()) - 1)));
-		System.out.println(prob);
 		return prob;
 	}
 	
@@ -102,4 +101,5 @@ public class TopicModel {
 		}
 		System.out.println("-----------------------");
 	}
+	
 }

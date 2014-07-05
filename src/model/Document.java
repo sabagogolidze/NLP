@@ -42,11 +42,9 @@ public class Document {
 	}
 	
 	public double getTopicProbability(Topic t){
-//		System.out.println("s");
-		if(topicCount.get(t) == null){
+		if(topicCount.get(t) == null)
 			return 0;
-		}
-		return ((double)topicCount.get(t)) / ((double)words.size());
+		return ((double)(topicCount.get(t))) / ((double)(words.size() - 1));
 	}
 	
 }
