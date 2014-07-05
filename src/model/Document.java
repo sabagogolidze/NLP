@@ -46,7 +46,13 @@ public class Document {
 		if(topicCount.get(t) == null){
 			return 0;
 		}
-		return ((double)topicCount.get(t)) / ((double)words.size());
+		double a = (double)topicCount.get(t) + 2;
+//		if(a<=0){
+//			a=0.1;
+//		}
+		double b = (double)(words.size() - 1) + 2*2;
+		
+		return (a) / (b);
 	}
 	
 }

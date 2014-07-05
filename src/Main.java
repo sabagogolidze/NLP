@@ -15,9 +15,9 @@ import model.Word;
 public class Main {
 	
 	private final static int TOPIC_COUNT = 2; 
-	private static String articleDelimiter = "+";
+//	private static String articleDelimiter = "+";
 	private final static int ITERATIONS = 26;
-	
+	private static String articleDelimiter = "\nთემა:\n";
 	public static void main(String[] args) throws IOException {
 //		String content = new Scanner(new File("input.txt")).useDelimiter("\\Z").next();
 //		content = content.replaceAll("[^ა-ჰ\\d -.!?_,:;\"']", " ");
@@ -46,21 +46,36 @@ public class Main {
 		Scanner sc = new Scanner(new File("input.txt"));
 		String topics = sc.useDelimiter("\\Z").next();
 //		System.out.println(articleCount);
-		StringTokenizer tk1 = new StringTokenizer(topics,articleDelimiter);
-		TopicModel topicModel = new TopicModel(ITERATIONS);
-		while(tk1.hasMoreElements()){
-	        String article = tk1.nextToken();
-	        ArrayList<Word> words = new ArrayList<Word>();
-	        StringTokenizer tk = new StringTokenizer(article);
-	        while(tk.hasMoreElements()){
-	        	String s = tk.nextToken();
-	        	System.out.println(s);
-	        	words.add(new Word(s));
-	        }
-	        Document d = new Document(words);
-	        topicModel.addDocument(d);
-	        
-	    }
+//		StringTokenizer tk1 = new StringTokenizer(topics,articleDelimiter);
+//		TopicModel topicModel = new TopicModel(ITERATIONS);
+//		while(tk1.hasMoreElements()){
+//	        String article = tk1.nextToken();
+//	        ArrayList<Word> words = new ArrayList<Word>();
+//	        StringTokenizer tk = new StringTokenizer(article);
+//	        while(tk.hasMoreElements()){
+//	        	String s = tk.nextToken();
+//	        	System.out.println(s);
+//	        	words.add(new Word(s));
+//	        }
+//	        Document d = new Document(words);
+//	        topicModel.addDocument(d);
+//	        
+//	    }
+		String [] splitString = topics.split(articleDelimiter);
+		 		TopicModel topicModel = new TopicModel(ITERATIONS);
+		 	    for(int i = 0; i < splitString.length ; i ++){
+		 	        String article = splitString[i];
+		 	        ArrayList<Word> words = new ArrayList<Word>();
+		 	        StringTokenizer tk = new StringTokenizer(article,"., !?_:;)(\"\'\n\t");
+		 	        while(tk.hasMoreElements()){
+		 	        	String s = tk.nextToken();
+		 //	        	System.out.println(s);
+		 	        	words.add(new Word(s));
+		 	        }
+		 	        Document d = new Document(words);
+		 	        topicModel.addDocument(d);
+		 	        
+		 	    }
 	    
 	    for(int i=0;i<TOPIC_COUNT;i++){
 	    	topicModel.addTopic(new Topic());
