@@ -8,17 +8,24 @@ public class SpellCorrect {
 	EditModel editModel;
 	LanguageModel languageModel;
 	private double EDITSCORE_COEF = 2;
+	private String trainPath;
+	private String devPath;
+	private int errors = 0;
+	private String result = "";
 
-	public SpellCorrect() {
-		HolbrookCorpus corpus = new HolbrookCorpus("holbrook-tagged-train.dat");
+	public SpellCorrect(String trainPath, String devPath) {
+		HolbrookCorpus corpus = new HolbrookCorpus(trainPath);
 		editModel = new EditModel("count_1edit.txt", corpus);
-		languageModel = null;
+		StupidBackoffLanguageModel sbLM = new StupidBackoffLanguageModel(corpus);
+		languageModel = sbLM;
+		this.trainPath = trainPath;
+		this.devPath = devPath;
 	}
 
-	public SpellCorrect(LanguageModel lm, HolbrookCorpus corpus) {
-		editModel = new EditModel("count_1edit.txt", corpus);
-		languageModel = lm;
-	}
+	// public SpellCorrect(LanguageModel lm, HolbrookCorpus corpus) {
+	// editModel = new EditModel("count_1edit.txt", corpus);
+	// languageModel = lm;
+	// }
 
 	/** corrects a whole corpus, returns a JSON representation of the output. */
 	String correctCorpus(HolbrookCorpus corpus, int partId) {
@@ -74,8 +81,8 @@ public class SpellCorrect {
 				if (editscore < min_prob) {
 					editscore = min_prob;
 				}
-//				System.out.println(alternative + " " + lmscore + " "
-//						+ editscore);
+				// System.out.println(alternative + " " + lmscore + " "
+				// + editscore);
 				double score = lmscore + editscore;
 				if (score >= max) {
 					max = score;
@@ -87,6 +94,9 @@ public class SpellCorrect {
 
 			}
 			sentence.set(i, word); // restore sentence to original state
+			if (!word.equals(argmax_w)) {
+				errors++;
+			}
 			argmax.set(argmax_i, argmax_w);
 		}
 
@@ -97,6 +107,7 @@ public class SpellCorrect {
 		int numCorrect = 0;
 		int numTotal = 0;
 		List<Sentence> testData = corpus.getData();
+
 		for (Sentence sentence : testData) {
 			if (sentence.isEmpty())
 				continue;
@@ -104,31 +115,28 @@ public class SpellCorrect {
 																		// misspelling
 			List<String> correct = sentence.getCorrectSentence(); // without
 																	// misspelling
-			// System.out.println();
-			for (String s : errorSentence) {
-				System.out.print(s + " ");
-			}
-			System.out.print("\ncorrect: ");
+																	// //
+																	// System.out.println();
+			// for (String s : errorSentence) {
+			// System.out.print(s + " ");
+			// }
 
 			List<String> hypothesis = correctSentence(errorSentence); // hypothesis
+			String sen = "";
 			for (String s : hypothesis) {
-				System.out.print(s + " ");
+				sen = sen + s + " ";
 			}
-			System.out.println();
+			sen += "\n";
+			result+=sen;
 			if (sentence.isCorrection(hypothesis)) {
 				numCorrect++;
 			}
 			numTotal++;
 		}
-		System.out.println();
 		return new SpellingResult(numCorrect, numTotal);
 	}
 
-	public static void eval() {
-		String trainPath = "holbrook-tagged-train.dat";
-		HolbrookCorpus trainingCorpus = new HolbrookCorpus(trainPath);
-
-		String devPath = "holbrook-tagged-dev.dat";
+	public CheckerResult eval() {
 		HolbrookCorpus devCorpus = new HolbrookCorpus(devPath);
 
 		// System.out.println("Laplace Unigram Language Model: ");
@@ -140,16 +148,21 @@ public class SpellCorrect {
 		// laplaceUnigramSpell.evaluate(devCorpus);
 		// System.out.println(laplaceUnigramOutcome.toString());
 
-		System.out.println("Stupid Backoff Language Model: ");
-		StupidBackoffLanguageModel sbLM = new StupidBackoffLanguageModel(
-				trainingCorpus);
-		SpellCorrect sbSpell = new SpellCorrect(sbLM, trainingCorpus);
-		SpellingResult sbOutcome = sbSpell.evaluate(devCorpus);
-		System.out.println(sbOutcome.toString());
+//		System.out.println("Stupid Backoff Language Model: ");
+
+		// SpellCorrect sbSpell = new SpellCorrect(sbLM, trainingCorpus);
+		SpellingResult sbOutcome = evaluate(devCorpus);
+		CheckerResult res = new CheckerResult(errors, result);
+		// System.out.println(sbOutcome.toString());
+		return res;
 
 	}
 
-	public static void main(String[] args) {
-		SpellCorrect.eval();
-	}
+//	public static void main(String[] args) {
+//		SpellCorrect s = new SpellCorrect("holbrook-tagged-train.dat",
+//				"holbrook-tagged-dev.dat");
+//		CheckerResult res = s.eval();
+//		System.out.println(res.getCorrectString()+" \n "+res.getErrors());
+//		// System.out.println(errors);
+//	}
 }
