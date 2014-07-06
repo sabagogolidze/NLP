@@ -11,10 +11,12 @@ public class DataCollector {
 	
 	public static void main(String[] args) throws IOException {
 		String content = new Scanner(new File("rawData.txt")).useDelimiter("\\Z").next();
+		content = content.replaceAll("-\r\n", "");
+		content = content.replaceAll("\n", "NO");
 		content = content.replaceAll("[^ა-ჰ\\d -.!?_,:;\"']", " ");
 		content = content.replaceAll("\\(", " ");
 		content = content.replaceAll("\\)", " ");
-
+		
 		content = content.replaceAll("\\.+", ".");
 		content = content.replaceAll("[.!?;]", ".");
 		content = content.replaceAll("_", "");
