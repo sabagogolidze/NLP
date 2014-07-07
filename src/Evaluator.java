@@ -15,7 +15,8 @@ public class Evaluator {
 	}
 
 
-	public int evaluate(int spellMistakes, Map<Topic, Double> topicRelativity){
+	public int evaluate(int spellMistakes, Map<String, Double> topicRelativity){
+		
 		return 0;
 	}
 
