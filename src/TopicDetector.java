@@ -31,10 +31,46 @@ public class TopicDetector {
 			}
 			firstRun = false;
 		}
-		// TODO
-		return null;
+		
+		return mostProbableTopic(wordGroup);
 	}
 
+
+	private String mostProbableTopic(List<String> words) {
+		double maxProb = Integer.MIN_VALUE;
+		String res = null;
+		for(String topic: topics.keySet()){
+			double cur = 0;
+			for(String word: words){
+				cur += wordProbability(topic, word);
+			}
+			cur += topicProbability(topic);
+			if(cur > maxProb){
+				maxProb = cur;
+				res = topic;
+			}
+		}
+		return res.replaceAll(".txt", "");
+	}
+
+	private double topicProbability(String topic) {
+		return Math.log(1.0/(double)topics.size());
+	}
+
+	private double wordProbability(String topic, String word) {
+		double count;
+		if(topics.get(topic).containsKey(word)){
+			count = topics.get(topic).get(word) + 1;
+		}else{
+			count = 1;
+		}
+		double sum = 0;
+		for(String w: topics.get(topic).keySet()){
+			sum += topics.get(topic).get(w);
+		}
+		sum += topics.get(topic).size();
+		return Math.log(count/sum);
+	}
 
 	private void train() throws Exception {
 		readStopWords();
@@ -42,13 +78,13 @@ public class TopicDetector {
 		for(File f: dir.listFiles()){
 			if(f.isFile()){
 				String topic = f.getName();
-				System.out.println(topic);
+//				System.out.println(topic);
 				BufferedReader br = new BufferedReader(new FileReader(f));
 				Map<String, Integer> map = new HashMap<String, Integer>();
 				String line = null;
 				while((line = br.readLine()) != null){
 					List<String> wordList = filterStopWords(line);
-					System.out.println(wordList);
+//					System.out.println(wordList);
 					for(String word: wordList){
 						if(map.containsKey(word)){
 							map.put(word, map.get(word));
@@ -96,7 +132,11 @@ public class TopicDetector {
 	
 //	public static void main(String[] args) {
 //		TopicDetector det = new TopicDetector();
-//		det.getTopic(null);
+//		List<String> words = new ArrayList<String>();
+//		words.add("სისხლი");
+//		words.add("ომი");
+//		words.add("ბრძოლა");
+//		System.out.println(det.getTopic(words));
 //	}
 
 }
