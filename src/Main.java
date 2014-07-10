@@ -20,7 +20,7 @@ import model.Word;
 
 public class Main {
 
-	private final static int TOPIC_COUNT = 2;
+	public final static int TOPIC_COUNT = 2;
 	// private static String articleDelimiter = "+";
 	private final static int ITERATIONS = 26;
 	private static String articleDelimiter = "\nთემა:\n";
@@ -189,10 +189,13 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-
 		analyseGradedTopics();
 		analyseUngradedTopics();
-		
-
+		ArrayList<Document> graded = topicModel.getDocuments();
+		ArrayList<Document> unGraded = ungradedTopicModel.getDocuments();
+		Evaluator ev = new Evaluator();
+		for(Document d : unGraded){
+			System.out.println(ev.evaluate(d, graded));
+		}
 	}
 }
