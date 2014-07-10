@@ -78,7 +78,7 @@ public class StupidBackoffLanguageModel implements LanguageModel {
 				double probability = Math.log(a / b);
 				score += probability;
 			} else {
-				double wordCount = 0.4;
+				double wordCount = 0.004;
 				if (V.containsKey(w)) {
 					wordCount = V.get(w);
 				}

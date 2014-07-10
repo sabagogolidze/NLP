@@ -81,8 +81,8 @@ public class SpellCorrect {
 				if (editscore < min_prob) {
 					editscore = min_prob;
 				}
-				// System.out.println(alternative + " " + lmscore + " "
-				// + editscore);
+//				 System.out.println(alternative + " " + lmscore + " "
+//				 + editscore);
 				double score = lmscore + editscore;
 				if (score >= max) {
 					max = score;

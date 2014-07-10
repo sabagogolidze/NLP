@@ -87,6 +87,16 @@ public class Main {
 			indexedTopics.put(topicIndex, top);
 
 		}
+		
+		for (Topic t : tops) {
+		System.out.println("topic:");
+		ArrayList<String> arr1 = new ArrayList<String>();
+		for (String s : t.getWordMap().keySet()) {
+			System.out.print(s + " " + t.getWordMap().get(s) + "  |  ");
+			arr1.add(s);
+		}
+		System.out.println();
+	}
 
 		ArrayList<Document> documents = topicModel.getDocuments();
 		for (Document d : documents) {
@@ -128,12 +138,14 @@ public class Main {
 			CheckerResult res = spellCorrect.eval();
 
 			ArrayList<Word> words = new ArrayList<Word>();
-			StringTokenizer tk = new StringTokenizer(article,
+			StringTokenizer tk = new StringTokenizer(res.getCorrectString(),
 					"., !?_:;)(\"\'\n\t");
 			while (tk.hasMoreElements()) {
 				String s = tk.nextToken();
 				// System.out.println(s);
-				words.add(new Word(s));
+				if(!s.equals("<s>") && !s.equals("</s>")){
+					words.add(new Word(s));
+				}
 			}
 			Document d = new Document(words);
 			d.setCheckerResult(res);
@@ -184,6 +196,16 @@ public class Main {
 
 			}
 			d.setUsedTopicsInArticle(usedTopicsInArticle);
+		}
+		
+		for (Topic t : tops) {
+			System.out.println("topic:");
+			ArrayList<String> arr1 = new ArrayList<String>();
+			for (String s : t.getWordMap().keySet()) {
+				System.out.print(s + " " + t.getWordMap().get(s) + "  |  ");
+				arr1.add(s);
+			}
+			System.out.println();
 		}
 		
 	}
