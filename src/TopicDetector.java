@@ -16,7 +16,7 @@ public class TopicDetector {
 	private boolean firstRun = true;
 	private Map<String, Map<String, Integer>> topics;
 	private Set<String> stopWords;
-	
+	private static List<String> topicList = new ArrayList<String>();
 	public TopicDetector(){
 		topics = new HashMap<String, Map<String, Integer>>();
 		stopWords = new HashSet<String>();
@@ -94,6 +94,7 @@ public class TopicDetector {
 					}
 				}
 				topics.put(topic, map);
+				topicList.add(topic);
 				br.close();
 			}
 		}
@@ -128,6 +129,10 @@ public class TopicDetector {
 			stopWords.add(word);
 		}
 		br.close();
+	}
+	
+	public static List<String> getTopics(){
+		return topicList;
 	}
 	
 //	public static void main(String[] args) {
