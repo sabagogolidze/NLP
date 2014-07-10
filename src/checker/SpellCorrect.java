@@ -7,7 +7,7 @@ import java.util.Map;
 public class SpellCorrect {
 	EditModel editModel;
 	LanguageModel languageModel;
-	private double EDITSCORE_COEF = 2;
+	private double EDITSCORE_COEF = 1;
 	private String trainPath;
 	private String devPath;
 	private int errors = 0;
@@ -63,7 +63,7 @@ public class SpellCorrect {
 		double maxlm = Double.NEGATIVE_INFINITY;
 		double maxedit = Double.NEGATIVE_INFINITY;
 		List<String> argmax = new ArrayList<String>(sentence);
-		double min_prob = -4.6;
+		double min_prob = -5.0;
 		// skip first and last tokens.
 		for (int i = 1; i < sentence.size() - 1; i++) {
 			max = Double.NEGATIVE_INFINITY;
@@ -158,11 +158,11 @@ public class SpellCorrect {
 
 	}
 
-//	public static void main(String[] args) {
-//		SpellCorrect s = new SpellCorrect("holbrook-tagged-train.dat",
-//				"holbrook-tagged-dev.dat");
-//		CheckerResult res = s.eval();
-//		System.out.println(res.getCorrectString()+" \n "+res.getErrors());
-//		// System.out.println(errors);
-//	}
+	public static void main(String[] args) {
+		SpellCorrect s = new SpellCorrect("holbrook-tagged-train.dat",
+				"holbrook-tagged-dev.dat");
+		CheckerResult res = s.eval();
+		System.out.println(res.getCorrectString()+" \n "+res.getErrors());
+		// System.out.println(errors);
+	}
 }

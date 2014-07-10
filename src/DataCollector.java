@@ -8,9 +8,7 @@ import java.util.Scanner;
 
 public class DataCollector {
 	
-	
-	public static void main(String[] args) throws IOException {
-		String content = new Scanner(new File("rawData.txt")).useDelimiter("\\Z").next();
+	public static String castToBetterString(String content){
 		content = content.replaceAll("-\r\n", "");
 		content = content.replaceAll("\n", "NO");
 		content = content.replaceAll("[^ა-ჰ\\d -.!?_,:;\"']", " ");
@@ -31,6 +29,12 @@ public class DataCollector {
 		content = content.replaceAll("\\.", ".\n");
 		content = content.replaceAll("\n+", "\n");
 		content = content.replaceAll("(-)([^ა-ჰ])", " ");
+		return content;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		String content = new Scanner(new File("rawData.txt")).useDelimiter("\\Z").next();
+		content = castToBetterString(content);
 		
 
 		PrintWriter wr = new PrintWriter(new FileWriter("output.txt"));

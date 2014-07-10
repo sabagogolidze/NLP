@@ -1,8 +1,14 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import checker.CheckerResult;
+import checker.SpellCorrect;
 
 import model.Document;
 import model.Topic;
@@ -17,49 +23,9 @@ public class Main {
 	private static String articleDelimiter = "\nთემა:\n";
 
 	public static void main(String[] args) throws IOException {
-		// String content = new Scanner(new
-		// File("input.txt")).useDelimiter("\\Z").next();
-		// content = content.replaceAll("[^ა-ჰ\\d -.!?_,:;\"']", " ");
-		// content = content.replaceAll("\\(", " ");
-		// content = content.replaceAll("\\)", " ");
-		//
-		//
-		// content = content.replaceAll("\\.+", ".");
-		// content = content.replaceAll("[.!?;]", ".");
-		// content = content.replaceAll(" +", " ");
-		// content = content.replaceAll("\\. +", ".");
-		// content = content.replaceAll("\\.+", ".");
-		// content = content.replaceAll("\\.", ".\n");
-		//
-		// content = content.replaceAll("([^ა-ჰ])(-)", " ");
-		//
-		// content = content.replaceAll("\\. +", ".");
-		// content = content.replaceAll("\\.", ".\n");
-		// content = content.replaceAll("\n+", "\n");
-		// content = content.replaceAll("(-)([^ა-ჰ])", " ");
-		//
-		// PrintWriter wr = new PrintWriter(new FileWriter("output.txt"));
-		// wr.append(content+"\n");
-		// wr.close();
 
 		Scanner sc = new Scanner(new File("input.txt"));
 		String topics = sc.useDelimiter("\\Z").next();
-		// System.out.println(articleCount);
-		// StringTokenizer tk1 = new StringTokenizer(topics,articleDelimiter);
-		// TopicModel topicModel = new TopicModel(ITERATIONS);
-		// while(tk1.hasMoreElements()){
-		// String article = tk1.nextToken();
-		// ArrayList<Word> words = new ArrayList<Word>();
-		// StringTokenizer tk = new StringTokenizer(article);
-		// while(tk.hasMoreElements()){
-		// String s = tk.nextToken();
-		// System.out.println(s);
-		// words.add(new Word(s));
-		// }
-		// Document d = new Document(words);
-		// topicModel.addDocument(d);
-		//
-		// }
 		String[] splitString = topics.split(articleDelimiter);
 		TopicModel topicModel = new TopicModel(ITERATIONS, 2, 0.5);
 		for (int i = 0; i < splitString.length; i++) {
@@ -77,13 +43,57 @@ public class Main {
 
 		}
 
+		Scanner sc1 = new Scanner(new File("holbrook-tagged-dev.dat"));
+		String text = sc1.useDelimiter("\\Z").next();
+		text = DataCollector.castToBetterString(text);
+		sc1.close();
+		PrintWriter wr = new PrintWriter(new FileWriter(
+				"holbrook-tagged-dev.dat"));
+		wr.append(text);
+		wr.close();
+
+		SpellCorrect spellCorrect = new SpellCorrect(
+				"holbrook-tagged-train.dat", "holbrook-tagged-dev.dat");
+		CheckerResult res = spellCorrect.eval();
+
+		String article = res.getCorrectString();
+		ArrayList<Word> words = new ArrayList<Word>();
+		StringTokenizer tk = new StringTokenizer(article, "., !?_:;)(\"\'\n\t");
+		while (tk.hasMoreElements()) {
+			String s = tk.nextToken();
+
+			if (!(s.equals("<s>") || s.equals("</s>"))) {
+				words.add(new Word(s));
+			}
+		}
+		Document d = new Document(words);
+		topicModel.addDocument(d);
+
 		for (int i = 0; i < TOPIC_COUNT; i++) {
 			topicModel.addTopic(new Topic());
 		}
 		topicModel.doLDA();
-		ArrayList<Topic> arr = topicModel.getTopics();
-		for (Topic t : arr) {
-			System.out.println("topic:");
+
+		ArrayList<Topic> tops = topicModel.getTopics();
+
+		for (int topicIndex = 0; topicIndex < tops.size(); topicIndex++) {
+			Topic t = tops.get(topicIndex);
+			ArrayList<String> wordGroup = new ArrayList<String>();
+			HashMap<String, Integer> wordMap = t.getWordMap();
+			for (String s : wordMap.keySet()) {
+				int count = wordMap.get(s);
+				for (int i = 0; i < count; i++) {
+					wordGroup.add(s);
+				}
+			}
+			TopicDetector topicDetector = new TopicDetector();
+			System.out.println(topicIndex + " "+ topicDetector.getTopic(wordGroup));
+		}
+
+
+		for (int topicIndex = 0; topicIndex < tops.size(); topicIndex++) {
+			Topic t = tops.get(topicIndex);
+			System.out.println("topic: " + topicIndex);
 			for (String s : t.getWordMap().keySet()) {
 				System.out.print(s + " " + t.getWordMap().get(s) + "  |  ");
 			}

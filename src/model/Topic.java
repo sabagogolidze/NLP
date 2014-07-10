@@ -42,7 +42,11 @@ public class Topic {
 	}
 	
 	public double getProbabaility(Word w){
-		return ((double)(wordMap.get(w.getWord())) + TopicModel.beta) / 
+		double A = 0;
+		if(wordMap.get(w.getWord()) != null){
+			A = wordMap.get(w.getWord());
+		}
+		return ((double)(A) + TopicModel.beta) / 
 				((double)wordSum + TopicModel.beta * TopicModel.vocabulary);
 	}
 }
