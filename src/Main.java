@@ -26,6 +26,7 @@ public class Main {
 
 		Scanner sc = new Scanner(new File("input.txt"));
 		String topics = sc.useDelimiter("\\Z").next();
+		sc.close();
 		String[] splitString = topics.split(articleDelimiter);
 		TopicModel topicModel = new TopicModel(ITERATIONS, 2, 0.5);
 		for (int i = 0; i < splitString.length; i++) {
@@ -76,7 +77,11 @@ public class Main {
 
 		ArrayList<Topic> tops = topicModel.getTopics();
 
+		HashMap<String, Integer> usedTopicsInArticle = new HashMap<String,Integer>();
+		HashMap<Integer,String> indexedTopics = new HashMap<Integer,String>();
+		
 		for (int topicIndex = 0; topicIndex < tops.size(); topicIndex++) {
+			
 			Topic t = tops.get(topicIndex);
 			ArrayList<String> wordGroup = new ArrayList<String>();
 			HashMap<String, Integer> wordMap = t.getWordMap();
@@ -87,10 +92,19 @@ public class Main {
 				}
 			}
 			TopicDetector topicDetector = new TopicDetector();
-			System.out.println(topicIndex + " "+ topicDetector.getTopic(wordGroup));
+			String top = topicDetector.getTopic(wordGroup);
+			System.out.println(topicIndex + " "+ top);
+			indexedTopics.put(topicIndex, top);
+			usedTopicsInArticle.put(top, 0);
+			
 		}
 
-
+		for(Word w:d.getWords()){
+//			System.out.println(w.getWord());
+			String top = indexedTopics.get(w.getIndex());
+			usedTopicsInArticle.put(top, usedTopicsInArticle.get(top)+1);
+		}
+		
 		for (int topicIndex = 0; topicIndex < tops.size(); topicIndex++) {
 			Topic t = tops.get(topicIndex);
 			System.out.println("topic: " + topicIndex);
@@ -98,6 +112,9 @@ public class Main {
 				System.out.print(s + " " + t.getWordMap().get(s) + "  |  ");
 			}
 			System.out.println();
+		}
+		for(String top:usedTopicsInArticle.keySet()){
+			System.out.println(top+ " "+usedTopicsInArticle.get(top));
 		}
 
 	}
