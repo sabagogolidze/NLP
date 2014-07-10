@@ -11,6 +11,12 @@ public class TopicModel {
 	public static double alpha = 0, beta = 0, topicCount = 0, vocabulary = 0;
 	private int iterations;
 
+	
+	public ArrayList<Document> getDocuments(){
+		
+		return documents;
+		
+	}
 	public TopicModel(int iterations, double alpha, double beta) {
 		TopicModel.alpha = alpha;
 		TopicModel.beta = beta;
