@@ -116,6 +116,6 @@ public class Main {
 		for(String top:usedTopicsInArticle.keySet()){
 			System.out.println(top+ " "+usedTopicsInArticle.get(top));
 		}
-
+		
 	}
 }
