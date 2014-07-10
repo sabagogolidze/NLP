@@ -3,11 +3,15 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import checker.CheckerResult;
+
 public class Document {
 
 	private HashMap<Topic, Integer> topicCount;
 	private ArrayList<Word> words;
-
+	private double grade = 0;
+	private CheckerResult checkerResult = null;
+	private HashMap<String, Integer> usedTopicsInArticle;
 	public Document(ArrayList<Word> words) {
 		this.words = words;
 		topicCount = new HashMap<Topic, Integer>();
@@ -48,6 +52,30 @@ public class Document {
 		double b = (double)(words.size() - 1) + 
 				TopicModel.alpha * TopicModel.topicCount;
 		return (a) / (b);
+	}
+
+	public double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
+
+	public CheckerResult getCheckerResult() {
+		return checkerResult;
+	}
+
+	public void setCheckerResult(CheckerResult checkerResult) {
+		this.checkerResult = checkerResult;
+	}
+
+	public HashMap<String, Integer> getUsedTopicsInArticle() {
+		return usedTopicsInArticle;
+	}
+
+	public void setUsedTopicsInArticle(HashMap<String, Integer> usedTopicsInArticle) {
+		this.usedTopicsInArticle = usedTopicsInArticle;
 	}
 	
 }
