@@ -70,8 +70,16 @@ public class Document {
 		this.checkerResult = checkerResult;
 	}
 
-	public HashMap<String, Integer> getUsedTopicsInArticle() {
-		return usedTopicsInArticle;
+	public HashMap<Integer, Integer> getUsedTopicsInArticle() {
+		HashMap<Integer, Integer> map = new HashMap<Integer,Integer>();
+		for(int i = 0; i < this.getSize(); i++){
+			if(map.containsKey(getWords().get(i).getIndex())){
+				map.put(getWords().get(i).getIndex(), map.get(getWords().get(i).getIndex())+1);
+			}else{
+				map.put(getWords().get(i).getIndex(), 1);
+			}
+		}
+		return map;
 	}
 
 	public void setUsedTopicsInArticle(HashMap<String, Integer> usedTopicsInArticle) {

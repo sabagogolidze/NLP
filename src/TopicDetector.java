@@ -20,9 +20,6 @@ public class TopicDetector {
 	public TopicDetector(){
 		topics = new HashMap<String, Map<String, Integer>>();
 		stopWords = new HashSet<String>();
-	}
-	
-	public String getTopic(List<String> wordGroup){
 		if(firstRun){
 			try {
 				train();
@@ -31,6 +28,10 @@ public class TopicDetector {
 			}
 			firstRun = false;
 		}
+	}
+	
+	public String getTopic(List<String> wordGroup){
+		
 		
 		return mostProbableTopic(wordGroup);
 	}
@@ -100,10 +101,11 @@ public class TopicDetector {
 		}
 	}
 
-	private List<String> filterStopWords(String line) {
+	public  List<String> filterStopWords(String line) {
 		line = filterLine(line);
 		List<String> res = new ArrayList<String>();
-		StringTokenizer tk = new StringTokenizer(line);
+		StringTokenizer tk = new StringTokenizer(line,
+				"., !?_:;)(\"\'\n\t");
 		while(tk.hasMoreTokens()){
 			String word = tk.nextToken();
 			if(stopWords.contains(word))
